@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArcCalc - Geometri Hesaplayıcı</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --input-bg: #2d2d2d;
+      --text-main: #e0e0e0;
+      --text-muted: #a0a0a0;
+      --accent: #4fa3d1;
+      --accent-hover: #3d8bb8;
+      --border-color: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      padding: 16px 20px 8px 20px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-clear {
+      background-color: #3a3a3c;
+      color: #fff;
+    }
+
+    .btn-clear:hover {
+      background-color: #4a4a4c;
+    }
+
+    .btn-calc {
+      background-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn-calc:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .calculator-form {
+      padding: 12px 20px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .field-label {
+      flex: 1;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .input-wrapper {
+      position: relative;
+      width: 140px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      text-align: right;
+      outline: none;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--accent);
+    }
+
+    .result-input {
+      background-color: #252525 !important;
+      color: var(--accent) !important;
+      font-weight: bold;
+    }
+
+    .diagram-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #252525;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+
+    .diagram-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <header>
+    <h1>ArcCalc</h1>
+    <p>Açı ve Yarıçap Geometri Hesaplayıcı</p>
+  </header>
+
+  <div class="btn-group">
+    <button class="btn btn-clear" onclick="clearAll()">CLEAR</button>
+    <button class="btn btn-calc" onclick="calculate()">CALCULATE</button>
+  </div>
+
+  <div class="calculator-form">
+    <!-- Angle -->
+    <div class="field-row">
+      <label class="field-label" for="angle">Angle (Degrees):</label>
+      <div class="input-wrapper">
+        <input type="number" id="angle" placeholder="0" step="any" oninput="calculate()">
+      </div>
+      <div class="diagram-icon">
+        <svg viewBox="0 0 40 40">
+          <path d="M 5 35 L 35 35 A 30 30 0 0 0 14 14 Z" fill="none" stroke="#666" stroke-width="1.5"/>
+          <path d="M 5 35 L 35 35 M 5 35 L 14 14" stroke="#ffffff" stroke-width="2"/>
+          <path d="M 15 35 A 10 10 0 0 0 10 28" fill="none" stroke="#4fa3d1" stroke-width="1.5"/>
+          <text x="17" y="30" fill="#4fa3d1" font-size="8">θ</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Radius -->
+    <div class="field-row">
+      <label class="field-label" for="radius">Radius:</label>
+      <div class="input-wrapper">
+        <input type="number" id="radius" placeholder="0" step="any" oninput="calculate()">
+      </div>
+      <div class="diagram-icon">
+        <svg viewBox="0 0 40 40">
+          <path d="M 5 35 L 35 35 A 30 30 0 0 0 14 14 Z" fill="none" stroke="#666" stroke-width="1.5"/>
+          <path d="M 5 35 L 35 35" stroke="#4fa3d1" stroke-width="2.5"/>
+          <text x="18" y="32" fill="#4fa3d1" font-size="8">r</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Arc Length -->
+    <div class="field-row">
+      <label class="field-label">Arc Length:</label>
+      <div class="input-wrapper">
+        <input type="number" id="arcLength" class="result-input" readonly placeholder="0">
+      </div>
+      <div class="diagram-icon">
+        <svg viewBox="0 0 40 40">
+          <path d="M 5 35 L 35 35 M 5 35 L 14 14" stroke="#666" stroke-width="1.5"/>
+          <path d="M 35 35 A 30 30 0 0 0 14 14" fill="none" stroke="#4fa3d1" stroke-width="2.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Chord Length -->
+    <div class="field-row">
+      <label class="field-label">Chord Length:</label>
+      <div class="input-wrapper">
+        <input type="number" id="chordLength" class="result-input" readonly placeholder="0">
+      </div>
+      <div class="diagram-icon">
+        <svg viewBox="0 0 40 40">
+          <path d="M 5 35 L 35 35 M 5 35 L 14 14" stroke="#666" stroke-width="1.5"/>
+          <path d="M 35 35 A 30 30 0 0 0 14 14" fill="none" stroke="#444" stroke-width="1"/>
+          <line x1="14" y1="14" x2="35" y2="35" stroke="#4fa3d1" stroke-width="2.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Middle Ordinate -->
+    <div class="field-row">
+      <label class="field-label">Middle Ordinate:</label>
+      <div class="input-wrapper">
+        <input type="number" id="middleOrdinate" class="result-input" readonly placeholder="0">
+      </div>
+      <div class="diagram-icon">
+        <svg viewBox="0 0 40 40">
+          <path d="M 5 35 L 35 35 M 5 35 L 14 14" stroke="#666" stroke-width="1.5"/>
+          <path d="M 35 35 A 30 30 0 0 0 14 14" fill="none" stroke="#666" stroke-width="1.5"/>
+          <line x1="14" y1="14" x2="35" y2="35" stroke="#666" stroke-width="1"/>
+          <line x1="24.5" y1="24.5" x2="26.2" y2="26.2" stroke="#4fa3d1" stroke-width="2.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function calculate() {
+    const angleDeg = parseFloat(document.getElementById('angle').value);
+    const radius = parseFloat(document.getElementById('radius').value);
+
+    const arcInput = document.getElementById('arcLength');
+    const chordInput = document.getElementById('chordLength');
+    const midInput = document.getElementById('middleOrdinate');
+
+    if (isNaN(angleDeg) || isNaN(radius) || radius <= 0 || angleDeg <= 0) {
+      arcInput.value = '';
+      chordInput.value = '';
+      midInput.value = '';
+      return;
+    }
+
+    // Dereceyi Radyana Çevirme
+    const angleRad = angleDeg * (Math.PI / 180);
+
+    // 1. Arc Length (Yay Uzunluğu) = R * θ
+    const arcLength = radius * angleRad;
+
+    // 2. Chord Length (Kiriş Uzunluğu) = 2 * R * sin(θ / 2)
+    const chordLength = 2 * radius * Math.sin(angleRad / 2);
+
+    // 3. Middle Ordinate (Orta Dikme) = R * (1 - cos(θ / 2))
+    const middleOrdinate = radius * (1 - Math.cos(angleRad / 2));
+
+    // Sonuçları virgülden sonra 4 basamak olacak şekilde yazdırıyoruz
+    arcInput.value = arcLength.toFixed(4);
+    chordInput.value = chordLength.toFixed(4);
+    midInput.value = middleOrdinate.toFixed(4);
+  }
+
+  function clearAll() {
+    document.getElementById('angle').value = '';
+    document.getElementById('radius').value = '';
+    document.getElementById('arcLength').value = '';
+    document.getElementById('chordLength').value = '';
+    document.getElementById('middleOrdinate').value = '';
+  }
+</script>
+
+</body>
+</html>
